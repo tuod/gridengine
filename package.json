@@ -1,0 +1,19 @@
+{
+  "name": "gridengine",
+  "version": "0.1.0",
+  "description": "Клиент-серверный движок для игр, основанных на гексогональной сетке.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuod/gridengine.git"
+  },
+  "author": "Stanislav Grebenyukov",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/tuod/gridengine/issues"
+  },
+  "homepage": "https://github.com/tuod/gridengine#readme"
+}
