@@ -2,9 +2,12 @@
   "name": "gridengine",
   "version": "0.1.0",
   "description": "Клиент-серверный движок для игр, основанных на гексогональной сетке.",
+  "main": "src/index.ts",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/tuod/gridengine/issues"
   },
-  "homepage": "https://github.com/tuod/gridengine#readme"
+  "homepage": "https://github.com/tuod/gridengine#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.0",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
 }
