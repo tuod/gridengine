@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { OffsetRadiusRatio } from "./models/Offset";
-import { HexGrid } from "./models/HexGrid";
+import { OffsetRadiusRatio } from "./models/geometry/Offset";
+import { HexGrid } from "./models/geometry/HexGrid";
 import { initialHexRadius } from "./consts";
 
 const gridCanvas = document.getElementById("gridCanvas") as HTMLCanvasElement;

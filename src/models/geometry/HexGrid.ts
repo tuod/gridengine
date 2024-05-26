@@ -1,7 +1,8 @@
-import { angle60inRadian } from "../consts";
+import { angle60inRadian, maxHexRadius, minHexRadius } from "../../consts";
 import { Hexagon } from "./Hexagon";
 import { Offset, OffsetRadiusRatio } from "./Offset";
 import { Point } from "./Point";
+import { ITextStyle } from "./Style";
 
 export class HexGrid {
   hexRadius: number;
@@ -25,9 +26,13 @@ export class HexGrid {
       resize: window,
       mousewheel: document,
     }).forEach(([eventName, sourceObject]) => {
-      sourceObject.addEventListener(eventName, (event): void => {
-        this.handleEvent(event);
-      });
+      sourceObject.addEventListener(
+        eventName,
+        (event): void => {
+          this.handleEvent(event);
+        },
+        { passive: false }
+      );
     });
   }
 
@@ -37,11 +42,11 @@ export class HexGrid {
         let wheelEvent = event as WheelEvent;
         wheelEvent.preventDefault();
         if (wheelEvent.deltaY >= 0) {
-          if (this.hexRadius < 100) {
+          if (this.hexRadius < maxHexRadius) {
             this.hexRadius = Math.round(this.hexRadius * 1.1);
           }
         } else {
-          if (this.hexRadius > 25) {
+          if (this.hexRadius > minHexRadius) {
             this.hexRadius = Math.round(this.hexRadius * 0.9);
           }
         }
@@ -56,19 +61,37 @@ export class HexGrid {
   }
 
   drawHex(hex: Hexagon) {
+    let textStyle: ITextStyle = {
+      globalAlpha: 0.8,
+      textAlign: "center",
+      textBaseline: "middle",
+      font: this.hexRadius * 0.4 + "px serif",
+      fillStyle: "black",
+    };
     hex
       .drawBorder(this.ctx, 0.05)
-      .drawText("#" + hex.key, this.ctx, new Offset(0, this.hexRadius * -0.35))
-      .drawText("x: " + hex.center.x, this.ctx)
+      .drawText(
+        "#" + hex.key,
+        this.ctx,
+        new Offset(0, this.hexRadius * -0.35),
+        textStyle
+      )
+      .drawText("x: " + hex.center.x, this.ctx, new Offset(0, 0), textStyle)
       .drawText(
         "y: " + hex.center.y,
         this.ctx,
-        new Offset(0, this.hexRadius * 0.35)
+        new Offset(0, this.hexRadius * 0.35),
+        textStyle
       );
   }
 
   draw() {
     this.fitCanvasToWindow();
+    this.drawGrid();
+    return this;
+  }
+
+  private drawGrid() {
     let a = angle60inRadian,
       r = this.hexRadius,
       w = this.canvas.width,
@@ -91,11 +114,10 @@ export class HexGrid {
         x += Math.round(r * (1 + Math.cos(a))),
           y += Math.round((-1) ** j++ * r * Math.sin(a))
       ) {
-        let hex = new Hexagon(new Point(x, y), r, hexNum);
+        let hex = new Hexagon(<Point>{ x: x, y: y }, r, hexNum);
         this.drawHex(hex);
         hexNum += 1;
       }
     }
-    return this;
   }
 }

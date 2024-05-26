@@ -1,9 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import { roundUp } from "../helpers";
-import { angle60inRadian } from "../consts";
+import { roundUp } from "../../helpers";
+import { angle60inRadian } from "../../consts";
 import { Point } from "./Point";
 import { Offset } from "./Offset";
 import { Line } from "./Line";
+import { CanvasText } from "./CanvasText";
+import { ITextStyle } from "./Style";
 
 export class Hexagon {
   center: Point;
@@ -18,7 +20,7 @@ export class Hexagon {
   private getVertice(index: number): Point {
     let x = this.center.x + this.radius * Math.cos(angle60inRadian * index);
     let y = this.center.y + this.radius * Math.sin(angle60inRadian * index);
-    return new Point(x, y);
+    return <Point>{ x: x, y: y };
   }
 
   drawBorder(ctx: CanvasRenderingContext2D, borderWidthRadiusRatio: number) {
@@ -36,17 +38,12 @@ export class Hexagon {
     return this;
   }
 
-  drawText(text: string, ctx: CanvasRenderingContext2D, offset = new Offset()) {
-    ctx.globalAlpha = 0.8;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = this.radius * 0.4 + "px serif";
-    ctx.fillStyle = "black";
-    ctx.fillText(
+  drawText(text: string, ctx: CanvasRenderingContext2D, offset = new Offset(), style?: ITextStyle) {
+    new CanvasText(
       text,
-      Math.round(this.center.x + offset.x),
-      Math.round(this.center.y + offset.y)
-    );
+      { x: this.center.x + offset.x, y: this.center.y + offset.y },
+      style
+    ).draw(ctx);
     return this;
   }
 }
